@@ -1,0 +1,19 @@
+{
+  "name": "mmkv-parser",
+  "version": "1.0.0",
+  "description": "Parser of Tencent MMKV format",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "bson": "^6.6.0"
+  }
+}
