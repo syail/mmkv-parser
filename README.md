@@ -10,14 +10,21 @@ Did not support encrypted storage, multiple storage input, crc load, ... etc
 ## Example
 
 ```ts
-const data = fs.readFileSync("my_database");
+import fs from "node:fs";
+import { MMKVParser } from "@syail/mmkv-parser";
 
-const parser = new MMKVParser(data).load();
+const parser = new MMKVParser(fs.readFileSync("bin/mmkv.default"));
 
-const keys = parser.getKeys();
+const map = parser.load();
 
-for (const key of keys) {
-  console.log(key, parser.readAsString(key));
+for (const key in map) {
+  console.log("KEY: ", key);
+
+  const values = map[key];
+
+  for (const value of values) {
+    console.log("VALUE: ", MMKVParser.readAsString(value));
+  }
 }
 ```
 

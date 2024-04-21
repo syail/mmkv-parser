@@ -3,15 +3,10 @@ import { parseVarint } from "./varint-parser";
 export class MMKVParser {
   private mmkvData: Buffer;
   private offset: number;
-  private keys: string[];
-  private values: Buffer[];
 
   constructor(mmkvData: Buffer) {
     this.mmkvData = mmkvData;
     this.offset = 0;
-
-    this.keys = [];
-    this.values = [];
   }
 
   private prepareOffset() {
@@ -50,11 +45,17 @@ export class MMKVParser {
     this.prepareOffset();
     const size = this.getDBSize();
 
+    const map: Record<string, Buffer[]> = {};
+
     while (this.offset < size) {
       const [keyLength, keyReaded] = parseVarint(this.mmkvData, this.offset);
       this.offset += keyReaded;
 
       const key = this.readUTF8String(keyLength.toNumber());
+
+      if (!(key in map)) {
+        map[key] = [];
+      }
 
       const [valueLength, valueReaded] = parseVarint(
         this.mmkvData,
@@ -62,24 +63,12 @@ export class MMKVParser {
       );
       this.offset += valueReaded;
 
-      const value = this.readBytes(valueLength.toNumber());
-
-      this.keys.push(key);
-      this.values.push(value);
+      map[key].push(this.readBytes(valueLength.toNumber()));
     }
-    return this;
+    return map;
   }
 
-  public getKeys(): string[] {
-    return this.keys;
-  }
-
-  public readAsString(key: string): string {
-    if (!this.keys.includes(key)) {
-      throw new Error(`Key ${key} not found`);
-    }
-    const value = this.values[this.keys.indexOf(key)];
-
+  public static readAsString(value: Buffer): string {
     const [keyLength, keyReaded] = parseVarint(value, 0);
 
     return value

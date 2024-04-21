@@ -1,10 +1,16 @@
 import fs from "node:fs";
 import { MMKVParser } from "../src";
 
-const parser = new MMKVParser(fs.readFileSync("bin/mmkv.default")).load();
+const parser = new MMKVParser(fs.readFileSync("bin/mmkv.default"));
 
-const keys = parser.getKeys();
+const map = parser.load();
 
-for (const key of keys) {
-  console.log(key, parser.readAsString(key));
+for (const key in map) {
+  console.log("KEY: ", key);
+
+  const values = map[key];
+
+  for (const value of values) {
+    console.log("VALUE: ", MMKVParser.readAsString(value));
+  }
 }
