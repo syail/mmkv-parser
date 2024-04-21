@@ -8,7 +8,7 @@ import { Long } from "bson";
  * @param buffer The buffer to read from.
  * @param offset The offset to start reading from.
  *
- * @returns A tuple [value, readBytes] where value is the parsed integer and readBytes is the number of bytes read.
+ * @returns A tuple [value, offset] where value is the parsed integer and offset is the new offset.
  */
 export function parseVarint(buffer: Buffer, offset: number): [Long, number] {
   let value = Long.UZERO;
