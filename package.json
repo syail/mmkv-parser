@@ -1,13 +1,28 @@
 {
-  "name": "mmkv-parser",
+  "name": "@syail/mmkv-parser",
   "version": "1.0.0",
   "description": "Parser of Tencent MMKV format",
-  "main": "index.js",
+  "main": "/dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
+  "prepublishOnly": "npm run build",
+  "keywords": [
+    "mmkv",
+    "parser",
+    "tencent",
+    "mmkv-parser"
+  ],
+  "author": "syail",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.12.7",
@@ -15,5 +30,8 @@
   },
   "dependencies": {
     "bson": "^6.6.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
