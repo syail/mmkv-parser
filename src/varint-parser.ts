@@ -8,18 +8,19 @@ import { Long } from "bson";
  * @param buffer The buffer to read from.
  * @param offset The offset to start reading from.
  *
- * @returns A tuple [value, offset] where value is the parsed integer and offset is the new offset.
+ * @returns A tuple [value, readBytes] where value is the parsed integer and readBytes is the number of bytes read.
  */
 export function parseVarint(buffer: Buffer, offset: number): [Long, number] {
   let value = Long.UZERO;
   let shift = 0;
   let curr: number;
+  let currOffset = offset;
 
   do {
-    curr = buffer[offset++];
+    curr = buffer[currOffset++];
     value = value.or(Long.fromNumber(curr & 0x7f).shiftLeft(shift));
     shift += 7;
   } while (curr & 0x80);
 
-  return [value, offset];
+  return [value, currOffset - offset];
 }
