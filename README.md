@@ -20,3 +20,20 @@ for (const key of keys) {
   console.log(key, parser.readAsString(key));
 }
 ```
+
+## Data Structure
+
+Header
+| name | offset | size |
+|:-------------------:|:------:|:----:|
+| Data Length (int32) | 0 | 4 |
+| Unknown (varint) | 4 | n |
+| Body | 4+n | - |
+
+Body
+| name |
+|:-------------------:|
+| key size (varint) |
+| key (string) |
+| value size (varint) |
+| value |
